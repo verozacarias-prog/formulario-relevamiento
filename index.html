@@ -301,7 +301,7 @@
 </div>
 
 <div class="container">
-
+<form id="diagForm" novalidate>
   <!-- INTRO -->
   <div class="intro-card">
     <div class="emoji-badge">👋</div>
@@ -311,7 +311,7 @@
     <p style="margin-top:8px;">No lleva más de 5 minutos y toda la info que compartís es confidencial. ¡Arranquemos! 🚀</p>
   </div>
 
-  <form id="diagForm" novalidate>
+  
 
     <!-- 1 -->
     <div class="section">
@@ -620,7 +620,7 @@
       .then(function(json) {
         overlay.classList.remove('active');
         if (json.status === 'ok') {
-          this.style.display = 'none';
+          document.getElementById('diagForm').style.display = 'none';
           var s = document.getElementById('successScreen');
           s.style.display = 'block';
           s.scrollIntoView({behavior:'smooth'});
