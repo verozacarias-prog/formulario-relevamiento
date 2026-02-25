@@ -620,7 +620,7 @@
       .then(function(json) {
         overlay.classList.remove('active');
         if (json.status === 'ok') {
-          document.getElementById('diagForm').style.display = 'none';
+          this.style.display = 'none';
           var s = document.getElementById('successScreen');
           s.style.display = 'block';
           s.scrollIntoView({behavior:'smooth'});
