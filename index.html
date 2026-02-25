@@ -479,6 +479,37 @@
       </div>
     </div>
 
+   <div id="adminSection" style="display: none; border: 2px dashed var(--orange); padding: 20px; border-radius: var(--radius); margin-top: 20px; background: #fff9f0;">
+  <h3 style="color: var(--navy); margin-bottom: 15px;">🛠 Modo Administrador</h3>
+  
+  <div class="field">
+    <label>Estado del Lead</label>
+    <select name="estado" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid var(--gray-line);">
+      <option value="contactado">Contactado (Default)</option>
+      <option value="Sin interes">Sin interés</option>
+      <option value="Pendiente">Pendiente</option>
+      <option value="Propuesta">Propuesta</option>
+      <option value="Piloto">Piloto</option>
+      <option value="Cliente">Cliente</option>
+    </select>
+  </div>
+
+  <div class="field" style="margin-top: 15px;">
+    <label>Reacción e Interés</label>
+    <div class="row-2">
+      <label><input type="radio" name="reaccion_interes" value="bajo"> Bajo</label>
+      <label><input type="radio" name="reaccion_interes" value="medio"> Medio</label>
+      <label><input type="radio" name="reaccion_interes" value="alto"> Alto</label>
+      <label><input type="radio" name="reaccion_interes" value="muy alto"> Muy alto</label>
+    </div>
+  </div>
+
+    <div class="field"><label>Reacción al precio</label><input type="text" name="reaccion_precio"></div>
+    <div class="field"><label>Objeción</label><input type="text" name="objecion"></div>
+    <div class="field"><label>Próximo paso</label><input type="text" name="proximo_paso"></div>
+    <div class="field"><label>Notas libres</label><textarea name="notas_libres"></textarea></div>
+    <div class="field"><label>¿Qué funcionó del pitch / Qué mejoraría?</label><textarea name="mejora_pitch"></textarea></div>
+   </div>
     <!-- SUBMIT -->
     <div class="submit-section">
       <h3>¡Casi listo! 🎉</h3>
@@ -566,6 +597,15 @@
     return ok;
   }
 
+ // Activar modo admin si la URL termina en ?mode=admin
+window.onload = function() {
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('mode') === 'admin') {
+    document.getElementById('adminSection').style.display = 'block';
+  }
+};
+
+
   document.querySelectorAll('input, textarea').forEach(function(el) {
     el.addEventListener('input', function() {
       var wrap = this.closest('.field');
@@ -605,6 +645,18 @@
       dudas:        document.querySelector('[name="dudas"]').value,
     };
 
+   // Y en tu función de recolectar datos (dentro del listener de submit), añade:
+   const adminData = {
+     estado:           document.querySelector('[name="estado"]')?.value,
+     reaccion_interes: document.querySelector('[name="reaccion_interes"]:checked')?.value,
+     reaccion_precio:  document.querySelector('[name="reaccion_precio"]')?.value,
+     objecion:         document.querySelector('[name="objecion"]')?.value,
+     proximo_paso:     document.querySelector('[name="proximo_paso"]')?.value,
+     notas_libres:     document.querySelector('[name="notas_libres"]')?.value,
+     mejora_pitch:     document.querySelector('[name="mejora_pitch"]')?.value,
+   };
+   // Combina esto con tu objeto 'data' existente antes de hacer el fetch
+    Object.assign(data, adminData);
     // Obtener token de reCAPTCHA v3 antes de enviar
     grecaptcha.ready(function() {
       grecaptcha.execute(RECAPTCHA_SITE_KEY, {action: 'submit'})
